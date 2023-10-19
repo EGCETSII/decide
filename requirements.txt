@@ -10,4 +10,8 @@ jsonnet==0.18.0
 django-nose==1.4.6
 django-rest-swagger==2.2.0
 selenium==4.7.2
+<<<<<<< HEAD
 ///sdads&&
+=======
+//3333333333
+>>>>>>> e1dbd81 (3333333333)
