@@ -473,7 +473,7 @@ El archivo "populate.json" se ha generado manualmente con ayuda de la documentac
 Versiones actuales
 ------------------
 
-En las ultimas actualizaciones se han modificado las versiones usadas por la aplicación Decide. Las 
+En las ultimas actualizaciones se han modificado las versiones usadas por la aplicación Decide. Las (cambio)
 versiones usadas actualmente se corresponden a las siguientes:
 
 * Django = 4.1
