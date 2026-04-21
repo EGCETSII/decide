@@ -238,13 +238,20 @@ PostgreSQL 11, la imagen `pgautoupgrade` se encargará de migrar automáticament
 datos al formato de PostgreSQL 14 en el primer arranque. Este proceso puede tardar
 unos minutos dependiendo del tamaño de la base de datos.
 
-Se puede editar el fichero docker-settings.py para modificar el settings
-del proyecto django antes de crear las imágenes del contenedor.
+La configuración se realiza mediante variables de entorno. Copiar los
+ficheros de ejemplo y editarlos según sea necesario:
+
+    $ cd docker
+    $ cp .env.decide.example .env.decide
+    $ cp .env.postgres.example .env.postgres
 
 Crear imágenes y lanzar contenedores:
 
-    $ cd docker
     $ docker-compose up -d
+
+Generar ficheros estáticos (solo si es necesario):
+
+    $ docker exec -ti decide_web ./manage.py collectstatic
 
 Parar contenedores:
 

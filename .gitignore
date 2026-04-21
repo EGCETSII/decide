@@ -81,6 +81,8 @@ celerybeat-schedule
 
 # dotenv
 .env
+docker/.env.*
+!docker/.env.*.example
 
 # virtualenv
 .venv

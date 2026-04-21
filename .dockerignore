@@ -1,0 +1,11 @@
+.git
+.github
+.venv
+*.pyc
+__pycache__
+*.egg-info
+tags
+
+# Docker
+docker/
+!docker/entrypoint.sh

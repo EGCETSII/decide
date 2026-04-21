@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
+
+def env_list(env_name, default=None):
+    """Get environment var and convert in python list. Example .env: APPS=x1,y2,z3"""
+    if default is None:
+        default = []
+    list_vars = os.environ.get(env_name, None)
+    return list_vars.split(",") if list_vars else default
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,12 +29,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^##ydkswfu0+=ofw0l#$kv^8n)0$i(qd&d&ol#p9!b$8*5%j1+'
+SECRET_KEY = os.environ.get('SECRET_KEY', '^##ydkswfu0+=ofw0l#$kv^8n)0$i(qd&d&ol#p9!b$8*5%j1+')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', [])
 
 
 # Application definition
@@ -78,7 +87,19 @@ MODULES = [
     'voting',
 ]
 
-BASEURL = 'http://localhost:8000'
+BASEURL = os.environ.get('BASEURL', 'http://localhost:8000')
+
+APIS = {
+    'authentication': os.environ.get('API_AUTHENTICATION', BASEURL),
+    'base': os.environ.get('API_BASE', BASEURL),
+    'booth': os.environ.get('API_BOOTH', BASEURL),
+    'census': os.environ.get('API_CENSUS', BASEURL),
+    'mixnet': os.environ.get('API_MIXNET', BASEURL),
+    'postproc': os.environ.get('API_POSTPROC', BASEURL),
+    'store': os.environ.get('API_STORE', BASEURL),
+    'visualizer': os.environ.get('API_VISUALIZER', BASEURL),
+    'voting': os.environ.get('API_VOTING', BASEURL),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -116,12 +137,12 @@ WSGI_APPLICATION = 'decide.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'decide',
-        'USER': 'decide',
-        'PASSWORD': 'decide',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.environ.get('DB_NAME', 'decide'),
+        'USER': os.environ.get('DB_USER', 'decide'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'decide'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -160,7 +181,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = os.environ.get('STATIC_URL', '/static/')
+STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(BASE_DIR, 'static'))
+
+MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+
+CSRF_TRUSTED_ORIGINS = env_list('CSRF_TRUSTED_ORIGINS', [])
+
+_secure_proxy_ssl = env_list('SECURE_PROXY_SSL_HEADER')
+SECURE_PROXY_SSL_HEADER = tuple(_secure_proxy_ssl) if _secure_proxy_ssl else None
 
 # number of bits for the key, all auths should use the same number of bits
 KEYBITS = 256

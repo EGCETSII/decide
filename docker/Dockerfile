@@ -7,14 +7,13 @@ RUN pip install gunicorn==25.0.3
 
 WORKDIR /app
 
-RUN git clone https://github.com/decide-update-4-1/decide-update-4.1.git .
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+COPY requirements.txt .
 RUN pip install -r requirements.txt
+COPY . .
 
 WORKDIR /app/decide
 
-# local settings.py
-ADD docker-settings.py /app/decide/local_settings.py
-
-RUN ./manage.py collectstatic
-
-#CMD ["gunicorn", "-w 5", "decide.wsgi", "--timeout=500", "-b 0.0.0.0:5000"]
+ENTRYPOINT ["/entrypoint.sh"]
