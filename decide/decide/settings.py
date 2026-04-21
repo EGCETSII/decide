@@ -162,6 +162,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Email configuration (override in local_settings.py for production SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@localhost'
+
 # number of bits for the key, all auths should use the same number of bits
 KEYBITS = 256
 

@@ -84,6 +84,40 @@ siguiente manera:
 
     ./manage.py runserver
 
+Configuración del correo electrónico
+-------------------------------------
+
+La aplicación incluye un sistema de recuperación de contraseña que envía un enlace por correo
+electrónico. Por defecto, en desarrollo los correos se muestran por consola (no se envían realmente).
+
+Para configurar el envío real de correos en producción, añade lo siguiente en tu fichero
+`local_settings.py`:
+
+```python
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.tuservidor.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'tu-correo@tuservidor.com'
+EMAIL_HOST_PASSWORD = 'tu-contraseña'
+DEFAULT_FROM_EMAIL = 'noreply@tuservidor.com'
+```
+
+Ejemplo para Gmail:
+
+```python
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'tu-correo@gmail.com'
+EMAIL_HOST_PASSWORD = 'tu-contraseña-de-aplicacion'
+DEFAULT_FROM_EMAIL = 'tu-correo@gmail.com'
+```
+
+**Nota:** En Gmail es necesario usar una [contraseña de aplicación](https://support.google.com/accounts/answer/185833)
+en lugar de la contraseña habitual de la cuenta.
+
 Tests
 -------------------
 
@@ -240,6 +274,21 @@ unos minutos dependiendo del tamaño de la base de datos.
 
 Se puede editar el fichero docker-settings.py para modificar el settings
 del proyecto django antes de crear las imágenes del contenedor.
+
+Para habilitar el envío real de correos (por ejemplo, para la recuperación de contraseña),
+añade la configuración SMTP en docker-settings.py:
+
+```python
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.tuservidor.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'tu-correo@tuservidor.com'
+EMAIL_HOST_PASSWORD = 'tu-contraseña'
+DEFAULT_FROM_EMAIL = 'noreply@tuservidor.com'
+```
+
+Si no se configura, los correos se mostrarán por consola (visible con `docker logs decide_web`).
 
 Crear imágenes y lanzar contenedores:
 

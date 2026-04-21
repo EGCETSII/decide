@@ -107,6 +107,9 @@
                                         required />
                                 </div>
                                 <button class="btn btn-primary mt-3" type="submit" data-bs-dismiss="modal">{% trans "Login" %}</button>
+                                <div class="mt-2">
+                                    <a href="{% url 'password_reset' %}">{% trans "Forgot your password?" %}</a>
+                                </div>
                             </form>
                         </div>
                     </div>
